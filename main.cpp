@@ -15,23 +15,40 @@
 
 
 namespace {
-    class Handler {
+    class CounterWindow {
         std::unique_ptr<Counter> _counter;
+        std::unique_ptr<Fl_Window> _window;
+        std::unique_ptr<Fl_Button> _down_button;
+        std::unique_ptr<Fl_Button> _up_button;
         std::unique_ptr<Fl_Box> _box;
 
     public:
-        Handler(std::unique_ptr<Counter> && counter, std::unique_ptr<Fl_Box> && box)
-            : _counter(std::move(counter)), _box(std::move(box)) {}
+        CounterWindow(std::unique_ptr<Counter> && counter)
+            : _counter(std::move(counter)),
+              _window(std::make_unique<Fl_Window>(180, 80)),
+              _down_button(std::make_unique<Fl_Button>(0, 0, 60, 80, "down")),
+              _up_button(std::make_unique<Fl_Button>(120, 0, 60, 80, "up")),
+              _box(std::make_unique<Fl_Box>(60, 0, 60, 80, "42")) {
+
+            _down_button->callback(down_callback, this);
+            _up_button->callback(up_callback, this);
+            _window->end();
+        }
+
+        void
+        show(int argc, char ** argv) {
+            _window->show(argc, argv);
+        }
 
         static void
         down_callback(Fl_Widget * down_button, void * data) {
-            auto handler = (Handler *)data;
+            auto handler = (CounterWindow *)data;
             handler->handle_down();
         }
 
         static void
         up_callback(Fl_Widget * up_button, void * data) {
-            auto handler = (Handler *)data;
+            auto handler = (CounterWindow *)data;
             handler->handle_up();
         }
 
@@ -60,18 +77,8 @@ int
 main(int argc, char ** argv) {
 
     auto counter = std::make_unique<Counter>(42);
-
-    auto window = std::make_unique<Fl_Window>(180, 80);
-    auto down_button = std::make_unique<Fl_Button>(0, 0, 60, 80, "down");
-    auto up_button = std::make_unique<Fl_Button>(120, 0, 60, 80, "up");
-    auto box = std::make_unique<Fl_Box>(60, 0, 60, 80, "42");
-
-    auto handler = std::make_unique<Handler>(std::move(counter), std::move(box));
-    down_button->callback(Handler::down_callback, handler.get());
-    up_button->callback(Handler::up_callback, handler.get());
-
-    window->end();
-    window->show(argc, argv);
+    auto handler = std::make_unique<CounterWindow>(std::move(counter));
+    handler->show(argc, argv);
 
     return Fl::run();
 }
