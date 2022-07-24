@@ -4,6 +4,10 @@
 
 #pragma once
 
+#if !defined(_COUNTER_H)
+#define _COUNTER_H
+
+
 class Counter {
     int _value;
 
@@ -15,4 +19,6 @@ public:
 
     void down();
     void up();
-};
+};  // class Counter
+
+#endif  // !_COUNTER_H

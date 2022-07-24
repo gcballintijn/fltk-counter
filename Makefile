@@ -7,8 +7,8 @@ LDSTATIC = $(shell fltk-config --use-gl --use-images --ldstaticflags)
 DEBUG = -g
 
 TARGET = counter
-OBJS = Counter.o main.o
-SRCS = Counter.cpp main.cpp
+OBJS = Counter.o CounterWindow.o main.o
+SRCS = Counter.cpp CounterWindow.cpp main.cpp
 
 .SUFFIXES: .o .cpp
 
@@ -23,5 +23,6 @@ clean:	$(TARGET) $(OBJS)
 
 $(TARGET): $(OBJS)
 
-main.o:		Counter.h main.cpp
-Counter.o:	Counter.h Counter.cpp
+main.o:				Counter.h CounterWindow.h main.cpp
+Counter.o:			Counter.h Counter.cpp
+CounterWindow.o:	Counter.h CounterWindow.h CounterWindow.cpp
