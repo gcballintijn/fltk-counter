@@ -15,23 +15,34 @@
 
 
 namespace {
-    class Handler {
+    class CounterWindow : public Fl_Window {
         Counter & _counter;
-        Fl_Box & _box;
+        Fl_Button _down_button;
+        Fl_Button _up_button;
+        Fl_Box _box;
 
     public:
-        Handler(Counter & counter, Fl_Box & box)
-            : _counter(counter), _box(box) {}
+        CounterWindow(Counter & counter)
+            : _counter(counter),
+              Fl_Window(180, 80),
+              _down_button(0, 0, 60, 80, "down"),
+              _up_button(120, 0, 60, 80, "up"),
+              _box(60, 0, 60, 80, "42") {
+
+            _down_button.callback(down_callback, this);
+            _up_button.callback(up_callback, this);
+            end();
+        }
 
         static void
         down_callback(Fl_Widget * down_button, void * data) {
-            auto handler = (Handler *)data;
+            auto handler = (CounterWindow *)data;
             handler->handle_down();
         }
 
         static void
         up_callback(Fl_Widget * up_button, void * data) {
-            auto handler = (Handler *)data;
+            auto handler = (CounterWindow *)data;
             handler->handle_up();
         }
 
@@ -60,17 +71,7 @@ int
 main(int argc, char ** argv) {
 
     Counter counter(42);
-
-    Fl_Window window(180, 80);
-    Fl_Button down_button(0, 0, 60, 80, "down");
-    Fl_Button up_button(120, 0, 60, 80, "up");
-    Fl_Box box(60, 0, 60, 80, "42");
-
-    Handler handler(counter, box);
-    down_button.callback(Handler::down_callback, &handler);
-    up_button.callback(Handler::up_callback, &handler);
-
-    window.end();
+    CounterWindow window(counter);
     window.show(argc, argv);
 
     return Fl::run();
