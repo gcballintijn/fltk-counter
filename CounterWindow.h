@@ -24,19 +24,20 @@ class CounterWindow {
     std::unique_ptr<Fl_Button> _down_button;
     std::unique_ptr<Fl_Button> _up_button;
     std::unique_ptr<Fl_Box> _box;
+    std::string _label;
 
 public:
     CounterWindow(std::unique_ptr<Counter> && counter);
 
     void show(int argc, char ** argv);
 
-    static void down_callback(Fl_Widget * down_button, void * data);
-    static void up_callback(Fl_Widget * up_button, void * data);
-
 private:
     void handle_down();
     void handle_up();
     void update_label();
+
+    static void down_callback(Fl_Widget * down_button, void * data);
+    static void up_callback(Fl_Widget * up_button, void * data);
 };  // class CounterWindow
 
 #endif  // !_COUNTER_WINDOW_H

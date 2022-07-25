@@ -18,7 +18,7 @@ SRCS = Counter.cpp CounterWindow.cpp main.cpp
 all:	$(TARGET)
 		$(LINK) -o $(TARGET) $(OBJS) $(LDSTATIC)
 
-clean:	$(TARGET) $(OBJS)
+clean:
 		rm -f $(TARGET) $(OBJS)
 
 $(TARGET): $(OBJS)
