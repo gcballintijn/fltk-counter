@@ -23,17 +23,18 @@ class CounterWindow : public Fl_Window {
     Fl_Button _down_button;
     Fl_Button _up_button;
     Fl_Box _box;
+    std::string _label;
 
 public:
     CounterWindow(Counter & counter);
-
-    static void down_callback(Fl_Widget * down_button, void * data);
-    static void up_callback(Fl_Widget * up_button, void * data);
 
 private:
     void handle_down();
     void handle_up();
     void update_label();
+
+    static void down_callback(Fl_Widget * down_button, void * data);
+    static void up_callback(Fl_Widget * up_button, void * data);
 };  // class CounterWindow
 
 #endif  // !_COUNTER_WINDOW_H

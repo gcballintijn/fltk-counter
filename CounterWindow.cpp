@@ -12,21 +12,12 @@ CounterWindow::CounterWindow(Counter & counter)
         _up_button(120, 0, 60, 80, "up"),
         _box(60, 0, 60, 80, "42") {
 
+    end();
+
     _down_button.callback(down_callback, this);
     _up_button.callback(up_callback, this);
-    end();
-}
 
-void
-CounterWindow::down_callback(Fl_Widget * down_button, void * data) {
-    auto handler = (CounterWindow *)data;
-    handler->handle_down();
-}
-
-void
-CounterWindow::up_callback(Fl_Widget * up_button, void * data) {
-    auto handler = (CounterWindow *)data;
-    handler->handle_up();
+    update_label();
 }
 
 void
@@ -43,6 +34,18 @@ CounterWindow::handle_up() {
 
 void
 CounterWindow::update_label() {
-    auto label = std::to_string(_counter.value());
-    _box.label(label.c_str());
+    _label = std::to_string(_counter.value());
+    _box.label(_label.c_str());
+}
+
+void
+CounterWindow::down_callback(Fl_Widget * down_button, void * data) {
+    auto window = (CounterWindow *)data;
+    window->handle_down();
+}
+
+void
+CounterWindow::up_callback(Fl_Widget * up_button, void * data) {
+    auto window = (CounterWindow *)data;
+    window->handle_up();
 }
